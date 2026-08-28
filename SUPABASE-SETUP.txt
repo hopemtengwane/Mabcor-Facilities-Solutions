@@ -1,0 +1,85 @@
+MABCOR FACILITIES SOLUTIONS — SUPABASE SETUP
+==============================================
+
+This version no longer needs Python, START_MABCOR_WEBSITE.bat, or a local server.
+The public website and Website Admin use Supabase directly, like the Sinegugu website architecture.
+
+ONE-TIME SETUP
+--------------
+
+1. Create a NEW Supabase project for Mabcor.
+   Keeping Mabcor separate from Sinegugu is recommended so the companies' administrators, media and data remain isolated.
+
+2. In Supabase Dashboard, open SQL Editor.
+   Paste and run the COMPLETE file: supabase-setup.sql
+
+   This creates:
+   - public.website_content
+   - Row Level Security policies
+   - the public website-media Storage bucket
+   - the initial Mabcor website content currently packaged in this ZIP
+
+3. In Supabase Dashboard, open Project Settings / API (or Connect/API Keys depending on the current dashboard wording).
+   Copy:
+   - Project URL
+   - Publishable key (an anon browser key also works if that is what your project shows)
+
+4. Open supabase-config.js in Notepad and replace:
+
+   PASTE_MABCOR_SUPABASE_PROJECT_URL_HERE
+   PASTE_MABCOR_SUPABASE_PUBLISHABLE_KEY_HERE
+
+   Save the file.
+
+   IMPORTANT:
+   The publishable/anon browser key is intended for client-side use when Row Level Security is enabled.
+   NEVER paste a service-role key, secret key, database password or other privileged credential into the website.
+
+5. In Supabase Dashboard > Authentication > Users, create the Mabcor website administrator account.
+   Use an email address and password that the authorised Mabcor administrator will use.
+
+6. Upload the website to GitHub Pages / your web host as normal.
+
+7. Open:
+
+   https://YOUR-WEBSITE/admin.html
+
+   Sign in with the administrator account from step 5.
+
+ADMIN FUNCTIONS INCLUDED
+------------------------
+
+- Add, remove and reorder hero slideshow images.
+- Change capability thumbnails.
+- Change every major website slideshow and parallax image set.
+- Upload new JPG / PNG / WebP images to Supabase Storage.
+- Change the public phone number, phone link, email, location and WhatsApp number.
+- Save changes to the shared Supabase database.
+
+PUBLIC WEBSITE CONTENT LOADING
+------------------------------
+
+The public site now uses a resilient loading sequence:
+
+1. Request current Mabcor content from Supabase.
+2. Retry several times when the request fails.
+3. If Supabase is temporarily unavailable, use the most recently cached successful Supabase content.
+4. Only use the content bundled in the website files as the final fallback.
+
+This avoids the aggressive fallback behaviour that previously caused the Sinegugu site to occasionally display default content during a temporary Supabase delay.
+
+FILES
+-----
+
+supabase-config.js   Browser connection settings (Project URL + publishable key)
+supabase-client.js   Creates the Supabase client
+supabase-content.js  Public-site loading, retry and cached fallback logic
+supabase-setup.sql   Database, RLS, Storage and initial-content setup
+admin.html           Authenticated Mabcor Website Admin interface
+admin.js             Admin load/save/upload logic
+site-data.js         Bundled safety-net content only
+
+NO PYTHON REQUIRED
+------------------
+
+The old files server.py and START_MABCOR_WEBSITE.bat are intentionally NOT included in this version.
