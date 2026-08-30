@@ -156,7 +156,8 @@ window.MABCOR_DEFAULT_DATA = {
     "phoneHref": "+27783504926",
     "email": "info@mabombacorp.co.za",
     "location": "South Africa",
-    "whatsapp": "27783504926"
+    "whatsapp": "27783504926",
+    "notificationEmail": "msindisi.mtengwane@gmail.com"
   },
   "news": [
     {
