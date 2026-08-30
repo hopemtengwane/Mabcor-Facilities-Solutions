@@ -80,7 +80,7 @@ form?.addEventListener('submit',async e=>{
  const fd=new FormData(form);
  submit.disabled=true;const original=submit.innerHTML;submit.textContent='Sending…';if(status)status.textContent='Uploading your enquiry…';
  try{
-   const {data:result,error}=await window.mabcorSupabase.functions.invoke('submit-enquiry',{body:fd});
+   const {data:result,error}=await window.mabcorSupabase.functions.invoke('smart-handler',{body:fd});
    if(error)throw error;
    if(!result?.ok)throw new Error(result?.error||'The enquiry could not be submitted.');
    form.reset();if(selectedFiles)selectedFiles.innerHTML='';
